@@ -49,10 +49,50 @@ public class Finder {
 
     public boolean exists(String[][] grid, String word) {
         int wordLength = word.length();
-        if (wordLength < 2 || wordLength > rows * cols)
-            return false;
+        if (wordLength < 2 || wordLength > rows * cols) return false;
         if (!Finder.IsPersianWord(word)) return false;
-        return true;
+        Boolean[][][] memo = new Boolean[rows][cols][1 << (rows * cols)];
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < cols; j++)
+                if (grid[i][j].equals(word.substring(0, 1))) {
+                    int initialMask = 1 << (i * cols + j);
+                    if (dfs(grid, word, i, j, initialMask, memo)) return true;
+                }
+        return false;
+    }
+
+    private boolean dfs(String[][] grid, String word, int i, int j, int mask,
+                        Boolean[][][] memo) {
+        int charIndex = Integer.bitCount(mask) - 1;
+        if (charIndex + 1 == word.length()) return true;
+        if (memo[i][j][mask] != null) return memo[i][j][mask];
+        int[][] directions = {
+                {-1, 0},
+                {1, 0},
+                {0, -1},
+                {0, 1},
+                {-1, -1},
+                {-1, 1},
+                {1, -1},
+                {1, 1}
+        };
+        boolean found = false;
+        for (int[] dir : directions) {
+            int ni = i + dir[0];
+            int nj = j + dir[1];
+            if (ni < 0 || ni >= rows || nj < 0 || nj >= cols) continue;
+            int bitPos = ni * cols + nj;
+            if ((mask & (1 << bitPos)) != 0) continue;
+            String nextChar = grid[ni][nj];
+            String expectedChar = word.substring(charIndex + 1, charIndex + 2);
+            if (nextChar.equals(expectedChar)) {
+                int newMask = mask | (1 << bitPos);
+                found = dfs(grid, word, ni, nj, newMask, memo);
+                if (found) break;
+            }
+        }
+        memo[i][j][mask] = found;
+        return found;
     }
 
     public static boolean IsPersianWord(String word) {

@@ -6,7 +6,7 @@ Bazambazi Letter Mash cheating
 
 - **Java 21**
 - **Maven**
-- **DSF Algorithm**
+- **DFS (Depth-First Search) Algorithm**
 - **Unit test**
 
 # Example

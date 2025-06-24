@@ -99,6 +99,69 @@ public class FinderTest {
     }
 
     @Test
+    @Tag("Finder:exists")
+    @DisplayName("Returns true if word parameter exists in the grid - 1")
+    public void exists_WhenWordParamExistsInTheGrid_N1_ShouldReturnsTrue() {
+        Finder finder = new Finder("س ا ع ت ا ب ف ظ ه ل ذ ل ب س ش ا");
+        String[][] grid = finder.getLetters();
+        assertThat(finder.exists(grid, "ساعت")).isTrue();
+    }
+
+    @Test
+    @Tag("Finder:exists")
+    @DisplayName("Returns true if word parameter exists in the grid - 2")
+    public void exists_WhenWordParamExistsInTheGrid_N2_ShouldReturnsTrue() {
+        Finder finder = new Finder("س م ع ت ا ت ش ن ی ن ا ش ب س ش ا");
+        String[][] grid = finder.getLetters();
+        assertThat(finder.exists(grid, "اتشنشانی")).isTrue();
+    }
+
+    @Test
+    @Tag("Finder:exists")
+    @DisplayName("Returns true if word parameter exists in the grid - 3")
+    public void exists_WhenWordParamExistsInTheGrid_N3_ShouldReturnsTrue() {
+        Finder finder = new Finder("س م ع ت ا ت ش ن ی ن ا ف ش ر ب ت");
+        String[][] grid = finder.getLetters();
+        assertThat(finder.exists(grid, "شربت")).isTrue();
+    }
+
+    @Test
+    @Tag("Finder:exists")
+    @DisplayName("Returns true if word parameter exists in the grid - 4")
+    public void exists_WhenWordParamExistsInTheGrid_N4_ShouldReturnsTrue() {
+        Finder finder = new Finder("ع ف ق ر س م ش ه ظ ط ا ی ث ه خ د");
+        String[][] grid = finder.getLetters();
+        assertThat(finder.exists(grid, "عمادی")).isTrue();
+    }
+
+    @Test
+    @Tag("Finder:exists")
+    @DisplayName("Returns true if word parameter exists in the grid - 5")
+    public void exists_WhenWordParamExistsInTheGrid_N5_ShouldReturnsTrue() {
+        Finder finder = new Finder("ع م ا د س م ش ی ظ ط ا ی ث ه خ د");
+        String[][] grid = finder.getLetters();
+        assertThat(finder.exists(grid, "عمادی")).isTrue();
+    }
+
+    @Test
+    @Tag("Finder:exists")
+    @DisplayName("Returns false if word parameter not exists in the grid - 1")
+    public void exists_WhenWordParamNotExistsInTheGrid_N1_ShouldReturnsFalse() {
+        Finder finder = new Finder("س م ع ت ا ت ش ن ی ن ا ف ش ر ب ت");
+        String[][] grid = finder.getLetters();
+        assertThat(finder.exists(grid, "شربتی")).isFalse();
+    }
+
+    @Test
+    @Tag("Finder:exists")
+    @DisplayName("Returns false if word parameter not exists in the grid - 2")
+    public void exists_WhenWordParamNotExistsInTheGrid_N2_ShouldReturnsFalse() {
+        Finder finder = new Finder("س پ س س س س س س د س س س س س س ر");
+        String[][] grid = finder.getLetters();
+        assertThat(finder.exists(grid, "پدر")).isFalse();
+    }
+
+    @Test
     @Tag("Finder:IsPersianWord")
     @DisplayName("Returns false if word parameter is null")
     public void IsPersianWord_WhenWordParamIsNull_ShouldReturnsFalse() {
