@@ -35,7 +35,7 @@ public class Finder {
             throw new InvalidLettersException("Input is null or blank");
         String[] letters = input.split(" ");
         if (letters.length != rows * cols || !Arrays.stream(letters)
-                .allMatch(letter -> letter.matches("[ا-ی]")))
+                .allMatch(Finder::IsPersianWord))
             throw new InvalidLettersException("Some letters are not valid");
         String[][] gridRowsCols = new String[rows][cols];
         int counterJ = 0;
@@ -45,6 +45,60 @@ public class Finder {
                 counterJ++;
             }
         return gridRowsCols;
+    }
+
+    public boolean exists(String[][] grid, String word) {
+        int wordLength = word.length();
+        if (wordLength < 2 || wordLength > rows * cols)
+            return false;
+        if (!Finder.IsPersianWord(word)) return false;
+        return true;
+    }
+
+    public static boolean IsPersianWord(String word) {
+        if (word == null || word.isBlank()) return false;
+        char[] letters = word.toCharArray();
+        int counter = 0;
+        for (char letter : letters) {
+            switch (letter) {
+                case 'ض':
+                case 'ص':
+                case 'ث':
+                case 'ق':
+                case 'ف':
+                case 'غ':
+                case 'ع':
+                case 'ه':
+                case 'خ':
+                case 'ح':
+                case 'ج':
+                case 'چ':
+                case 'ش':
+                case 'س':
+                case 'ی':
+                case 'ب':
+                case 'ل':
+                case 'ا':
+                case 'ت':
+                case 'ن':
+                case 'م':
+                case 'ک':
+                case 'گ':
+                case 'پ':
+                case 'ظ':
+                case 'ط':
+                case 'ز':
+                case 'ژ':
+                case 'ر':
+                case 'ذ':
+                case 'د':
+                case 'و':
+                    break;
+                default:
+                    counter++;
+            }
+        }
+        return counter == 0;
     }
 
 }

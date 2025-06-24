@@ -71,4 +71,66 @@ public class FinderTest {
                 });
     }
 
+    @Test
+    @Tag("Finder:exists")
+    @DisplayName("Returns false if word parameter has less than 2 characters")
+    public void exists_WhenWordHasLessThan2Characters_ShouldReturnsFalse() {
+        Finder finder = new Finder("س ع ق ف ا ب ف ظ ه ل ذ ل ب س ش ا");
+        String[][] grid = finder.getLetters();
+        assertThat(finder.exists(grid, "ب")).isFalse();
+    }
+
+    @Test
+    @Tag("Finder:exists")
+    @DisplayName("Returns false if word parameter has greater than grid cells")
+    public void exists_WhenWordHasGreaterThanGridCells_ShouldReturnsFalse() {
+        Finder finder = new Finder("س ع ق ف ا ب ف ظ ه ل ذ ل ب س ش ا");
+        String[][] grid = finder.getLetters();
+        assertThat(finder.exists(grid, "بنیتیتنبالمقتلمنتل")).isFalse();
+    }
+
+    @Test
+    @Tag("Finder:exists")
+    @DisplayName("Returns false if word parameter has an invalid character")
+    public void exists_WhenWordHasInvalidCharacter_ShouldReturnsFalse() {
+        Finder finder = new Finder("س ع ق ف ا ب ف ظ ه ل ذ ل ب س ش ا");
+        String[][] grid = finder.getLetters();
+        assertThat(finder.exists(grid, "سaب")).isFalse();
+    }
+
+    @Test
+    @Tag("Finder:IsPersianWord")
+    @DisplayName("Returns false if word parameter is null")
+    public void IsPersianWord_WhenWordParamIsNull_ShouldReturnsFalse() {
+        assertThat(Finder.IsPersianWord(null)).isFalse();
+    }
+
+    @Test
+    @Tag("Finder:IsPersianWord")
+    @DisplayName("Returns false if word parameter is blank or empty")
+    public void IsPersianWord_WhenWordParamIsBlank_ShouldReturnsFalse() {
+        assertThat(Finder.IsPersianWord("")).isFalse();
+    }
+
+    @Test
+    @Tag("Finder:IsPersianWord")
+    @DisplayName("Returns false if word parameter has a non-Persian character")
+    public void IsPersianWord_WhenWordParamHasNonPersianChar_ShouldReturnsFalse() {
+        assertThat(Finder.IsPersianWord("عmادی")).isFalse();
+    }
+
+    @Test
+    @Tag("Finder:IsPersianWord")
+    @DisplayName("Returns false if word parameter has a whitespace character")
+    public void IsPersianWord_WhenWordParamHasWhitespaceChar_ShouldReturnsFalse() {
+        assertThat(Finder.IsPersianWord("ع ادی")).isFalse();
+    }
+
+    @Test
+    @Tag("Finder:IsPersianWord")
+    @DisplayName("Returns true if word parameter is a Persian word")
+    public void IsPersianWord_WhenWordParamIsPersianWord_ShouldReturnsTrue() {
+        assertThat(Finder.IsPersianWord("عمادی")).isTrue();
+    }
+
 }
