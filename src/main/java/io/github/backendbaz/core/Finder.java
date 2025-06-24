@@ -1,5 +1,7 @@
 package io.github.backendbaz.core;
 
+import io.github.backendbaz.exceptions.InvalidLettersException;
+
 public class Finder {
 
     private int rows = 4;
@@ -24,6 +26,12 @@ public class Finder {
 
     public void setCols(int cols) {
         this.cols = cols;
+    }
+
+    public String[][] getLetters() throws InvalidLettersException {
+        if (input == null || input.isBlank())
+            throw new InvalidLettersException("Input is null or blank");
+        return new String[][]{};
     }
 
 }
