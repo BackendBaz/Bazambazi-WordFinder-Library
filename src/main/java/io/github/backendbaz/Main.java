@@ -5,6 +5,10 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
+        runApplication();
+    }
+
+    public static void runApplication() {
         System.out.println("Welcome to Bazambazi Word Finder CLI!");
         while (true) {
             try {
