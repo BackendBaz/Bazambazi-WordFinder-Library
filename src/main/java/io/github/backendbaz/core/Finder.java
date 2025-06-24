@@ -37,7 +37,14 @@ public class Finder {
         if (letters.length != rows * cols || !Arrays.stream(letters)
                 .allMatch(letter -> letter.matches("[ا-ی]")))
             throw new InvalidLettersException("Some letters are not valid");
-        return new String[][]{};
+        String[][] gridRowsCols = new String[rows][cols];
+        int counterJ = 0;
+        for (int i = 0; i < gridRowsCols.length; i++)
+            for (int j = 0; j < gridRowsCols[i].length; j++) {
+                gridRowsCols[i][j] = letters[counterJ];
+                counterJ++;
+            }
+        return gridRowsCols;
     }
 
 }

@@ -4,6 +4,8 @@ import io.github.backendbaz.exceptions.InvalidLettersException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class FinderTest {
@@ -54,6 +56,19 @@ public class FinderTest {
                 new Finder("س ع ق ف ا ب ف ظ آ ل ذ ل ب س ش ا").getLetters())
                 .isInstanceOf(InvalidLettersException.class)
                 .hasMessageContaining("Some letters are not valid");
+    }
+
+    @Test
+    @Tag("Finder:getLetters")
+    @DisplayName("Returns 2D array of letters")
+    public void getLetters_WhenArrayOfLettersIsValid_ShouldReturns2DArrayOfLetters() {
+        assertThat(new Finder("س ع ق ف ا ب ف ظ ه ل ذ ل ب س ش ا").getLetters())
+                .isEqualTo(new String[][]{
+                        {"س", "ع", "ق", "ف"},
+                        {"ا", "ب", "ف", "ظ"},
+                        {"ه", "ل", "ذ", "ل"},
+                        {"ب", "س", "ش", "ا"}
+                });
     }
 
 }

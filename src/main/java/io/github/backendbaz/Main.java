@@ -1,5 +1,8 @@
 package io.github.backendbaz;
 
+import io.github.backendbaz.core.Finder;
+import io.github.backendbaz.exceptions.InvalidLettersException;
+
 import java.util.Scanner;
 
 public class Main {
@@ -20,7 +23,10 @@ public class Main {
                     System.out.println("\nBye!");
                     break;
                 }
-                // todo ...
+                Finder finder = new Finder(letters);
+                String[][] gridOfLetters = finder.getLetters();
+            } catch (InvalidLettersException e) {
+                System.out.println("Invalid letters Error -> " + e.getMessage());
             } catch (Exception e) {
                 System.out.println("Something went wrong! Try again.");
             } finally {
