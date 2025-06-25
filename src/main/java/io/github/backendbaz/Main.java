@@ -4,64 +4,60 @@ import io.github.backendbaz.core.Dictionary;
 import io.github.backendbaz.core.Finder;
 import io.github.backendbaz.core.Word;
 import io.github.backendbaz.exceptions.InvalidLettersException;
-import org.json.simple.parser.ParseException;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
-public class Main implements Runnable {
+public class Main {
 
-    private static List<Word> words;
-
-    public static void main(String[] args) {
-        Main main = new Main();
-        Thread thread = new Thread(main);
-        thread.start();
-        while (thread.isAlive()) System.out.println("loading...");
-        runApplication();
+    public static void main(String[] args) throws InterruptedException,
+            ExecutionException {
+        System.out.println("process -> Loading dictionary ...");
+        CompletableFuture<Dictionary> dictionaryFuture = CompletableFuture.supplyAsync(() -> {
+            try {
+                return new Dictionary().load("dictionary/words.json");
+            } catch (Exception e) {
+                throw new RuntimeException("File Error -> Failed to load dictionary");
+            }
+        });
+        Dictionary dictionary = dictionaryFuture.get();
+        System.out.println("\nOK -> Dictionary loaded successfully!");
+        runApplication(dictionary);
     }
 
-    public static void runApplication() {
-        System.out.println("Welcome to Bazambazi Word Finder CLI!");
+    public static void runApplication(Dictionary dictionary) {
+        System.out.println("*".repeat(50));
+        System.out.println("Welcome to Bazambazi Letter Mash cheating!");
+        Scanner scan = new Scanner(System.in);
         while (true) {
             try {
-                System.out.println("Enter your Persian letters separated by a space " +
-                        "or insert 'e' to exit the program:");
-                Scanner scan = new Scanner(System.in);
-                String letters = scan.nextLine();
+                System.out.println("Enter your Persian letters separated by a " +
+                        "space or insert 'e' to exit:");
+                String letters = scan.nextLine().trim();
                 if (letters.equalsIgnoreCase("e")) {
                     System.out.println("\nBye!");
                     break;
                 }
                 Finder finder = new Finder(letters);
-                String[][] gridOfLetters = finder.getLetters();
-                List<Word> results = new ArrayList<>();
-                for (Word word : words) {
-                    if (finder.exists(gridOfLetters, word.getWord()))
-                        results.add(word);
-                    if (results.size() >= 3) break;
+                List<Word> results = finder.findTopWords(dictionary, 3);
+                if (results.isEmpty()) {
+                    System.out.println("No words found!");
+                    continue;
                 }
                 results.forEach(word ->
                         System.out.println("Word: " + word.getWord() +
                                 " - Point: " + word.getPoint()));
             } catch (InvalidLettersException e) {
-                System.out.println("Invalid letters Error -> " + e.getMessage());
+                System.out.println("Letters Error -> " + e.getMessage());
             } catch (Exception e) {
-                System.out.println("Something went wrong! Try again.");
+                System.out.println("Error -> " + e.getMessage());
+                // e.printStackTrace();
             } finally {
                 System.out.println("=".repeat(50));
             }
         }
+        scan.close();
     }
 
-    @Override
-    public void run() {
-        try {
-            words = new Dictionary()
-                    .getWords("./src/main/resources/dictionary/words.json");
-        } catch (IOException | ParseException e) {
-            System.out.println(e.getMessage());
-        }
-    }
 }

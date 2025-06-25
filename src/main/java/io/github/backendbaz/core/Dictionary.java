@@ -5,44 +5,79 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
-import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Dictionary {
 
-    private final List<Word> words = new ArrayList<>();
+    private final Map<String, Long> wordMap = new HashMap<>();
+    private final TrieNode trieRoot = new TrieNode();
 
-    public List<Word> getWords(String filePath) throws DictionaryFileException,
+    public Dictionary load(String resourcePath) throws DictionaryFileException,
             IOException, ParseException {
-        Path path = Paths.get(filePath);
-        if (!Files.exists(path) || !Files.isRegularFile(path) ||
-                !Files.isReadable(path))
-            throw new DictionaryFileException("Dictionary file not found or " +
-                    "is not readable");
+        InputStream inputStream = getClass().getResourceAsStream(resourcePath);
+        // اگر با مسیر نسبی پیدا نشد
+        if (inputStream == null) {
+            inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath.startsWith("/")
+                    ? resourcePath.substring(1)
+                    : resourcePath);
+        }
+        // اگر هنوز فایل پیدا نشد
+        if (inputStream == null)
+            throw new DictionaryFileException("Dictionary file not found");
         JSONParser parser = new JSONParser();
-        try (FileReader reader = new FileReader(filePath)) {
-            // parse the JSON file:
-            Object obj = parser.parse(reader);
-            // cast the parsed object to a JSONArray:
-            JSONArray jsonArray = (JSONArray) obj;
-            for (Object object : jsonArray) {
-                JSONObject jsonObject = (JSONObject) object;
-                // access data from the JSONObject:
-                String word = (String) jsonObject.get("word");
-                long point = (long) jsonObject.get("point");
-                words.add(new Word(word, point));
+        try (InputStreamReader reader = new InputStreamReader(inputStream,
+                StandardCharsets.UTF_8)) {
+            JSONArray jsonArray = (JSONArray) parser.parse(reader);
+            for (Object obj : jsonArray) {
+                JSONObject jsonObj = (JSONObject) obj;
+                String word = (String) jsonObj.get("word");
+                long point = (long) jsonObj.get("point");
+                wordMap.put(word, point);
+                insertIntoTrie(word);
             }
         }
-        // sort it:
-        words.sort(Comparator.comparing(Word::getPoint));
-        return words.reversed();
+        return this;
+    }
+
+    private void insertIntoTrie(String word) {
+        TrieNode current = trieRoot;
+        for (char c : word.toCharArray()) {
+            String ch = String.valueOf(c);
+            current = current.getChildren().computeIfAbsent(ch, k ->
+                    new TrieNode());
+        }
+        current.setEndOfWord(true);
+    }
+
+    public TrieNode getTrieRoot() {
+        return trieRoot;
+    }
+
+    public Long getPoint(String word) {
+        return wordMap.get(word);
+    }
+}
+
+class TrieNode {
+
+    private final Map<String, TrieNode> children = new HashMap<>();
+    private boolean endOfWord;
+
+    public Map<String, TrieNode> getChildren() {
+        return children;
+    }
+
+    public boolean isEndOfWord() {
+        return endOfWord;
+    }
+
+    public void setEndOfWord(boolean endOfWord) {
+        this.endOfWord = endOfWord;
     }
 
 }
