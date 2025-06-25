@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Dictionary {
@@ -39,7 +40,9 @@ public class Dictionary {
                 words.add(new Word(word, point));
             }
         }
-        return words;
+        // sort it:
+        words.sort(Comparator.comparing(Word::getPoint));
+        return words.reversed();
     }
 
 }

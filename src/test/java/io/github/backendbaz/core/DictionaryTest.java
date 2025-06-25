@@ -19,7 +19,7 @@ public class DictionaryTest {
     @Tag("Dictionary:getWords")
     @DisplayName("Throws the DictionaryFileException if path of " +
             "file not exists or is not readable or is not a valid path")
-    public void getWords_WhenFileNotExistsOrNotValidOrNotReadablePath_ShouldThrowsDictionaryFileException() throws IOException {
+    public void getWords_WhenFileNotExistsOrNotValidOrNotReadablePath_ShouldThrowsDictionaryFileException() {
         assertThatThrownBy(() -> new Dictionary()
                 .getWords("/src/main/resources/dictionary/words.json"))
                 .isInstanceOf(DictionaryFileException.class)
@@ -31,12 +31,12 @@ public class DictionaryTest {
     @DisplayName("Returns the list of words from JSON file")
     public void getWords_WhenFileExistsAndOk_ShouldReturnsWordsList() throws IOException, ParseException {
         List<Word> words = new ArrayList<>();
-        words.add(new Word("خدا", 4));
-        words.add(new Word("پدر", 3));
-        words.add(new Word("اتشنشانی", 8));
-        words.add(new Word("عمادی", 5));
+        words.add(new Word("ابتنی", 8));
+        words.add(new Word("ابانبار", 7));
+        words.add(new Word("اببها", 5));
+        words.add(new Word("ابجو", 3));
         assertThat(new Dictionary()
-                .getWords("./src/main/resources/dictionary/words.json"))
+                .getWords("./src/main/resources/dictionary/words.test.json"))
                 .isEqualTo(words);
     }
 
