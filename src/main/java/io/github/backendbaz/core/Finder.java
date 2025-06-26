@@ -20,7 +20,8 @@ public class Finder {
             throw new InvalidLettersException("Input cannot be empty");
         String[] letters = input.split("\\s+");
         if (letters.length != ROWS * COLS)
-            throw new InvalidLettersException("Exactly " + (ROWS * COLS) + " letters required");
+            throw new InvalidLettersException("Exactly " + (ROWS * COLS) +
+                    " letters required");
         for (String letter : letters)
             if (!isValidPersianLetter(letter))
                 throw new InvalidLettersException("Invalid Persian letter: " +
@@ -45,7 +46,7 @@ public class Finder {
                         new StringBuilder(), foundWords);
         return foundWords.stream()
                 .map(word -> new Word(word, dictionary.getPoint(word)))
-                .sorted(Comparator.comparingLong(Word::getPoint).reversed())
+                .sorted(Comparator.comparingLong(Word::point).reversed())
                 .limit(topN)
                 .toList();
     }

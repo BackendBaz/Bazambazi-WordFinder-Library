@@ -8,10 +8,38 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
+    <!-- اطلاعات توسعه‌دهنده -->
+    <developers>
+        <developer>
+            <name>Amirhossein Emadi</name>
+            <email>emadi.henker404@gmail.com</email>
+            <organization>None</organization>
+        </developer>
+    </developers>
+
+    <!-- لایسنس -->
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+
+    <!-- SCM (Source Control Management) -->
+    <scm>
+        <connection>scm:git:git://github.com/BackendBaz/Bazambazi-WordFinder-Library.git</connection>
+        <developerConnection>scm:git:git@github.com:BackendBaz/Bazambazi-WordFinder-Library.git</developerConnection>
+        <url>https://github.com/BackendBaz/Bazambazi-WordFinder-Library</url>
+    </scm>
+
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- تعیین نسخه‌های واحد برای کتابخانه‌ها -->
+        <jackson.version>2.17.1</jackson.version>
+        <junit.version>5.10.2</junit.version>
     </properties>
 
     <build>
@@ -20,75 +48,107 @@
                 <directory>src/main/resources</directory>
                 <includes>
                     <include>**/*.json</include>
+                    <include>**/*.properties</include>
                 </includes>
+                <!-- غیرفعال کردن فیلترینگ برای فایل‌های JSON -->
+                <filtering>false</filtering>
             </resource>
         </resources>
         <plugins>
+            <!-- پلاگین اصلی JAR -->
             <plugin>
-                <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.4.2</version>
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>io.github.backendbaz.Main</mainClass>
+                            <!-- اضافه کردن این تنظیمات برای مدیریت بهتر classpath -->
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
                         </manifest>
                     </archive>
                 </configuration>
             </plugin>
+            <!-- پلاگین کامپایلر -->
             <plugin>
-                <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.14.0</version>
                 <configuration>
                     <release>21</release>
+                    <!-- فعال کردن پارامترهای کامپایل برای دیباگ بهتر -->
+                    <parameters>true</parameters>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
                 </configuration>
+            </plugin>
+            <!-- پلاگین برای کپی وابستگی‌ها -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.8.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.junit/junit-bom -->
+        <!-- وابستگی‌های Jackson با نسخه یکسان -->
         <dependency>
-            <groupId>org.junit</groupId>
-            <artifactId>junit-bom</artifactId>
-            <version>5.13.1</version>
-            <type>pom</type>
-            <scope>test</scope>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter -->
+        <!-- وابستگی‌های تست با نسخه یکسان -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.13.1</version>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->
         <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>4.0.0-M1</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.junit.platform/junit-platform-launcher -->
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-launcher</artifactId>
-            <version>1.13.1</version>
-            <scope>runtime</scope>
+            <version>1.10.2</version>
+            <scope>test</scope>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
         <dependency>
-            <groupId>com.googlecode.json-simple</groupId>
-            <artifactId>json-simple</artifactId>
-            <version>1.1.1</version>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.25.3</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
-
 </project>
