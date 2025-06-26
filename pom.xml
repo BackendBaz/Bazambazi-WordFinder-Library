@@ -8,7 +8,6 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <!-- اطلاعات توسعه‌دهنده -->
     <developers>
         <developer>
             <name>Amirhossein Emadi</name>
@@ -17,7 +16,6 @@
         </developer>
     </developers>
 
-    <!-- لایسنس -->
     <licenses>
         <license>
             <name>MIT License</name>
@@ -31,6 +29,14 @@
         <developerConnection>scm:git:git@github.com:BackendBaz/Bazambazi-WordFinder-Library.git</developerConnection>
         <url>https://github.com/BackendBaz/Bazambazi-WordFinder-Library</url>
     </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/BackendBaz/Bazambazi-WordFinder-Library</url>
+        </repository>
+    </distributionManagement>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
