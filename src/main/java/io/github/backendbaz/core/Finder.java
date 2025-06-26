@@ -83,7 +83,7 @@ public class Finder {
 
     public static boolean isValidPersianLetter(String letter) {
         return letter != null && letter.length() == 1
-                && "ضصثقفغعهخحجچشسیبلاتنمکگپظطزرذدوا".contains(letter);
+                && "ضصثقفغعهخحجچشسیبلاتنمکگپظطزرذدوژ".contains(letter);
     }
 
 }
