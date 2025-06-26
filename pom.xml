@@ -45,7 +45,6 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- تعیین نسخه‌های واحد برای کتابخانه‌ها -->
         <jackson.version>2.17.1</jackson.version>
-        <junit.version>5.10.2</junit.version>
     </properties>
 
     <build>
@@ -69,7 +68,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <!-- اضافه کردن این تنظیمات برای مدیریت بهتر classpath -->
+                            <!-- برای مدیریت بهتر classpath -->
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
                         </manifest>
@@ -135,13 +134,13 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.version}</version>
+            <version>5.10.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.version}</version>
+            <version>5.10.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
