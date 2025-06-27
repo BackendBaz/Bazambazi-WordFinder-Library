@@ -9,6 +9,7 @@ public class Finder {
     private static final int ROWS = 4;
     private static final int COLS = 4;
     private final String[][] grid = new String[ROWS][COLS];
+    private record FoundWord(String word, List<Point> path) {}
 
     public Finder(String input) throws InvalidLettersException {
         validateInput(input);
@@ -38,29 +39,40 @@ public class Finder {
     }
 
     public List<Word> findTopWords(Dictionary dictionary, int topN) {
-        Set<String> foundWords = new HashSet<>();
+        Set<FoundWord> foundWords = new HashSet<>();
         boolean[][] visited = new boolean[ROWS][COLS];
-        for (int i = 0; i < ROWS; i++)
-            for (int j = 0; j < COLS; j++)
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
                 searchWords(dictionary.getTrieRoot(), i, j, visited,
-                        new StringBuilder(), foundWords);
+                        new StringBuilder(), new ArrayList<>(), foundWords);
+            }
+        }
         return foundWords.stream()
-                .map(word -> new Word(word, dictionary.getPoint(word)))
+                .map(foundWord -> new Word(
+                        foundWord.word(),
+                        dictionary.getPoint(foundWord.word()),
+                        foundWord.path()
+                ))
                 .sorted(Comparator.comparingLong(Word::point).reversed())
                 .limit(topN)
                 .toList();
     }
 
-    private void searchWords(TrieNode node, int i, int j, boolean[][] visited,
-                             StringBuilder currentWord, Set<String> results) {
-        if (i < 0 || i >= ROWS || j < 0 || j >= COLS || visited[i][j]) return;
+    private void searchWords(TrieNode node, int i, int j,
+            boolean[][] visited, StringBuilder currentWord,
+                             List<Point> currentPath, Set<FoundWord> results) {
+        if (i < 0 || i >= ROWS || j < 0 || j >= COLS || visited[i][j])
+            return;
         String letter = grid[i][j];
         TrieNode nextNode = node.getChildren().get(letter);
-        if (nextNode == null) return;
+        if (nextNode == null)
+            return;
         visited[i][j] = true;
         currentWord.append(letter);
+        currentPath.add(new Point(i, j));
         if (nextNode.isEndOfWord() && currentWord.length() >= 2)
-            results.add(currentWord.toString());
+            results.add(new FoundWord(currentWord.toString(),
+                    new ArrayList<>(currentPath)));
         // 8 جهت : بالا ، چپ ، راست ، پایین و مورب ها (4)
         int[][] directions = {
                 {-1, 0},
@@ -75,10 +87,13 @@ public class Finder {
         for (int[] dir : directions) {
             int ni = i + dir[0];
             int nj = j + dir[1];
-            searchWords(nextNode, ni, nj, visited, currentWord, results);
+            searchWords(nextNode, ni, nj, visited, currentWord, currentPath,
+                    results);
         }
+        // Backtracking:
         visited[i][j] = false;
         currentWord.deleteCharAt(currentWord.length() - 1);
+        currentPath.removeLast();
     }
 
     public static boolean isValidPersianLetter(String letter) {

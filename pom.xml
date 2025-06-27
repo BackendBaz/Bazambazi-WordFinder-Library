@@ -3,11 +3,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <!-- اطلاعات پایه -->
     <groupId>io.github.backendbaz</groupId>
     <artifactId>bazambazi-wordfinder</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
+    <name>Bazambazi WordFinder</name>
+    <description>Advanced word search library for Java applications</description>
+    <url>https://github.com/BackendBaz/Bazambazi-WordFinder-Library</url>
+
+    <!-- اطلاعات توسعه‌دهنده -->
     <developers>
         <developer>
             <name>Amirhossein Emadi</name>
@@ -16,25 +23,32 @@
         </developer>
     </developers>
 
+    <!-- مجوز -->
     <licenses>
         <license>
             <name>MIT License</name>
             <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
         </license>
     </licenses>
 
-    <!-- SCM (Source Control Management) -->
+    <!-- کنترل نسخه (SCM) -->
     <scm>
-        <connection>scm:git:git://github.com/BackendBaz/Bazambazi-WordFinder-Library.git</connection>
-        <developerConnection>scm:git:git@github.com:BackendBaz/Bazambazi-WordFinder-Library.git</developerConnection>
+        <connection>scm:git:https://github.com/BackendBaz/Bazambazi-WordFinder-Library.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:BackendBaz/Bazambazi-WordFinder-Library.git</developerConnection>
         <url>https://github.com/BackendBaz/Bazambazi-WordFinder-Library</url>
+        <tag>HEAD</tag>
     </scm>
 
+    <!-- مدیریت توزیع برای انتشار در Maven Central -->
     <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
         <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/BackendBaz/Bazambazi-WordFinder-Library</url>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
 
@@ -43,8 +57,12 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <!-- تعیین نسخه‌های واحد برای کتابخانه‌ها -->
         <jackson.version>2.17.1</jackson.version>
+        <!-- نسخه پلاگین‌ها -->
+        <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
+        <maven-javadoc-plugin.version>3.6.0</maven-javadoc-plugin.version>
+        <maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
+        <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
     </properties>
 
     <build>
@@ -55,65 +73,92 @@
                     <include>**/*.json</include>
                     <include>**/*.properties</include>
                 </includes>
-                <!-- غیرفعال کردن فیلترینگ برای فایل‌های JSON -->
                 <filtering>false</filtering>
             </resource>
         </resources>
+
         <plugins>
-            <!-- پلاگین اصلی JAR -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.4.2</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <!-- برای مدیریت بهتر classpath -->
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
-            <!-- پلاگین کامپایلر -->
+            <!-- کامپایلر -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.14.0</version>
                 <configuration>
                     <release>21</release>
-                    <!-- فعال کردن پارامترهای کامپایل برای دیباگ بهتر -->
                     <parameters>true</parameters>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
-            <!-- پلاگین برای کپی وابستگی‌ها -->
+
+            <!-- تولید سورس JAR -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.8.1</version>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source-plugin.version}</version>
                 <executions>
                     <execution>
-                        <id>copy-dependencies</id>
-                        <phase>prepare-package</phase>
+                        <id>attach-sources</id>
                         <goals>
-                            <goal>copy-dependencies</goal>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- تولید Javadoc JAR -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
-                            <overWriteReleases>false</overWriteReleases>
-                            <overWriteSnapshots>false</overWriteSnapshots>
-                            <overWriteIfNewer>true</overWriteIfNewer>
+                            <doclint>none</doclint> <!-- برای جلوگیری از خطاهای Javadoc -->
+                            <show>protected</show>
+                            <nohelp>true</nohelp>
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!-- امضای دیجیتال (GPG) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>${maven-gpg-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- انتشار در Sonatype (اختیاری اما توصیه شده) -->
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>${nexus-staging-maven-plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
             </plugin>
         </plugins>
     </build>
 
     <dependencies>
-        <!-- وابستگی‌های Jackson با نسخه یکسان -->
+        <!-- Jackson -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -130,7 +175,7 @@
             <version>${jackson.version}</version>
         </dependency>
 
-        <!-- وابستگی‌های تست با نسخه یکسان -->
+        <!-- Testing -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
