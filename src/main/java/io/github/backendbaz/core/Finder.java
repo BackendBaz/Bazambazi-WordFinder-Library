@@ -61,16 +61,16 @@ public class Finder {
     private void searchWords(TrieNode node, int i, int j,
             boolean[][] visited, StringBuilder currentWord,
                              List<Point> currentPath, Set<FoundWord> results) {
-        if (i < 0 || i >= ROWS || j < 0 || j >= COLS || visited[i][j])
-            return;
+        if (i < 0 || i >= ROWS || j < 0 || j >= COLS || visited[i][j]) return;
         String letter = grid[i][j];
         TrieNode nextNode = node.getChildren().get(letter);
-        if (nextNode == null)
-            return;
+        if (nextNode == null) return;
         visited[i][j] = true;
         currentWord.append(letter);
         currentPath.add(new Point(i, j));
-        if (nextNode.isEndOfWord() && currentWord.length() >= 2)
+        if (nextNode.isEndOfWord() && currentWord.length() >= 2 &&
+                results.stream().noneMatch(word -> word.word()
+                        .contentEquals(currentWord)))
             results.add(new FoundWord(currentWord.toString(),
                     new ArrayList<>(currentPath)));
         // 8 جهت : بالا ، چپ ، راست ، پایین و مورب ها (4)
