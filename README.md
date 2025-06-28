@@ -1,13 +1,19 @@
 **Bazambazi Word Finder Library**
 
-# Features
+A package used for cheating the **Letter Mash** game in **[Bazambazi](https://bazambazi.games)**
 
-Bazambazi Letter Mash cheating
+<img src="src/main/resources/images/help.jpg" alt="HELP">
+
+# Features
 
 - **Java 21**
 - **Maven**
 - **`DFS` (Depth-First Search) Algorithm and `Trie` letters nodes management**
 - **Unit test**
+
+# Download
+
+**[Maven Central Repository](https://central.sonatype.com/artifact/io.github.backendbaz/bazambazi-wordfinder/overview)**
 
 # Usage
 
