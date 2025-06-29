@@ -2,7 +2,6 @@ package io.github.backendbaz.core;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.backendbaz.exceptions.DictionaryFileException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -15,13 +14,11 @@ public class Dictionary {
 
     private final Map<String, Long> wordMap = new HashMap<>();
     private final TrieNode trieRoot = new TrieNode();
+    public static final String PATH = "/dictionary/words.json";
 
-    public Dictionary load() throws DictionaryFileException,
-            IOException {
-        String resourcePath = "/dictionary/words.json";
-        InputStream inputStream = getClass().getResourceAsStream(resourcePath);
-        if (inputStream == null)
-            throw new DictionaryFileException("Dictionary file not found");
+    public Dictionary load(String resource) throws IOException {
+        InputStream inputStream = getClass().getResourceAsStream(resource);
+        if (inputStream == null) throw new IOException("Dictionary file not found");
         ObjectMapper mapper = new ObjectMapper();
         try (InputStreamReader reader = new InputStreamReader(inputStream,
                 StandardCharsets.UTF_8)) {
@@ -31,8 +28,6 @@ public class Dictionary {
                 wordMap.put(entry.word(), entry.point());
                 insertIntoTrie(entry.word());
             }
-        } catch (Exception e) {
-            throw new IOException("Failed to process the JSON file");
         }
         return this;
     }

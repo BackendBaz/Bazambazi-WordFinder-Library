@@ -2,7 +2,7 @@
 
 A package used for cheating the **Letter Mash** game in **[Bazambazi](https://bazambazi.games)**
 
-<img src="src/main/resources/images/help.jpg" alt="HELP">
+<img src="src/main/resources/images/help.jpg" alt="HELP" width="400">
 
 # Features
 
