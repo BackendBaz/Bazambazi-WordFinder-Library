@@ -6,9 +6,9 @@ A package used for cheating the **Letter Mash** game in **[Bazambazi](https://ba
 
 # Features
 
-- **Java 21**
-- **Maven**
-- **`DFS` (Depth-First Search) Algorithm and `Trie` letters nodes management**
+- **Java Version: `21+`**
+- **Project Management Tool: `Maven`**
+- **`DFS` (Depth-First Search) Algorithm and `Trie` Data Structure**
 - **Unit test**
 
 # Download

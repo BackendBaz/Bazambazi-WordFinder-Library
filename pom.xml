@@ -7,11 +7,11 @@
     <!-- اطلاعات پایه -->
     <groupId>io.github.backendbaz</groupId>
     <artifactId>bazambazi-wordfinder</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <packaging>jar</packaging>
 
     <name>Bazambazi Letter Mash Cheating</name>
-    <description>Library for cheating the Letter mash game in Bazambazi</description>
+    <description>Used for cheating the Letter Mash game in Bazambazi</description>
     <url>https://github.com/BackendBaz/Bazambazi-WordFinder-Library</url>
 
     <!-- اطلاعات توسعه‌دهنده -->
