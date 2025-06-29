@@ -2,7 +2,6 @@ package io.github.backendbaz.core;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 public record Word(String word, long point, List<Point> path) {

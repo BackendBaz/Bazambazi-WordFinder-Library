@@ -1,7 +1,6 @@
 package io.github.backendbaz.core;
 
 import io.github.backendbaz.exceptions.InvalidLettersException;
-
 import java.util.*;
 
 public class Finder {
@@ -18,7 +17,7 @@ public class Finder {
 
     private void validateInput(String input) throws InvalidLettersException {
         if (input == null || input.isBlank())
-            throw new InvalidLettersException("Input cannot be empty");
+            throw new InvalidLettersException("Input cannot be null or empty");
         String[] letters = input.split("\\s+");
         if (letters.length != ROWS * COLS)
             throw new InvalidLettersException("Exactly " + (ROWS * COLS) +
@@ -41,12 +40,10 @@ public class Finder {
     public List<Word> findTopWords(Dictionary dictionary, int topN) {
         Set<FoundWord> foundWords = new HashSet<>();
         boolean[][] visited = new boolean[ROWS][COLS];
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLS; j++) {
+        for (int i = 0; i < ROWS; i++)
+            for (int j = 0; j < COLS; j++)
                 searchWords(dictionary.getTrieRoot(), i, j, visited,
                         new StringBuilder(), new ArrayList<>(), foundWords);
-            }
-        }
         return foundWords.stream()
                 .map(foundWord -> new Word(
                         foundWord.word(),
@@ -96,7 +93,7 @@ public class Finder {
         currentPath.removeLast();
     }
 
-    public static boolean isValidPersianLetter(String letter) {
+    private boolean isValidPersianLetter(String letter) {
         return letter != null && letter.length() == 1
                 && "ضصثقفغعهخحجچشسیبلاتنمکگپظطزرذدوژ".contains(letter);
     }
