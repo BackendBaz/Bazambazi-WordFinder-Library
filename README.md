@@ -37,20 +37,21 @@ import java.util.concurrent.ExecutionException;
 
 public class Main {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         System.out.println("process -> Loading dictionary ...");
         CompletableFuture<Dictionary> dictionaryFuture = CompletableFuture.supplyAsync(() -> {
             try {
                 return new Dictionary().load();
             } catch (Exception e) {
-                throw new RuntimeException("File Error -> Failed to load dictionary");
+                return null;
             }
         });
         try {
-            Dictionary dictionary = dictionaryFuture.get();
+            var dictionary = dictionaryFuture.get();
+            if (dictionary == null) throw new Exception();
             System.out.println("\nOK -> Dictionary loaded successfully!");
             runApplication(dictionary);
-        } catch (ExecutionException e) {
+        } catch (Exception e) {
             System.err.println("Thread Error -> Could not load dictionary!");
         }
     }
