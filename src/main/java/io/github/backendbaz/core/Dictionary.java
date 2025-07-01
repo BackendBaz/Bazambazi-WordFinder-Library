@@ -2,6 +2,7 @@ package io.github.backendbaz.core;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.backendbaz.dto.WordDto;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -74,7 +75,6 @@ public class Dictionary {
      * @param resource Absolute path to JSON resource in classpath (e.g., {@value #PATH})
      * @return Current dictionary instance (fluent interface)
      * @throws IOException If the resource is not found or JSON parsing fails
-     * @see Word
      */
     public Dictionary load(String resource) throws IOException {
         InputStream inputStream = getClass().getResourceAsStream(resource);
@@ -83,8 +83,8 @@ public class Dictionary {
         try (InputStreamReader reader = new InputStreamReader(inputStream,
                 StandardCharsets.UTF_8)) {
             var entries = mapper.readValue(reader,
-                    new TypeReference<List<Word>>() {});
-            for (Word entry : entries) {
+                    new TypeReference<List<WordDto>>() {});
+            for (var entry : entries) {
                 wordMap.put(entry.word(), entry.point());
                 insertIntoTrie(entry.word());
             }

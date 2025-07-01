@@ -2,6 +2,11 @@
 
 A package used for cheating the **Letter Mash** game in **[Bazambazi](https://bazambazi.games)**
 
+**Note:**
+
+- **`Version 1.x.x`: Automatic Module (used for all JDKs - `Java 8+`)**
+- **`Version 2.x.x`: Explicit Module (used for `JDK 9+` - supports `JPMS`)**
+
 <img src="src/main/resources/images/help.jpg" alt="HELP" width="400">
 
 # Features
@@ -20,7 +25,7 @@ A package used for cheating the **Letter Mash** game in **[Bazambazi](https://ba
 ```java
 import io.github.backendbaz.core.Dictionary;
 import io.github.backendbaz.core.Finder;
-import io.github.backendbaz.core.Word;
+import io.github.backendbaz.models.Word;
 import io.github.backendbaz.exceptions.InvalidLettersException;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -55,34 +60,34 @@ public class Main {
         System.out.println("Welcome to Bazambazi Letter Mash cheating!");
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(System.in, StandardCharsets.UTF_8))) {
-        while (true) {
-            try {
-                System.out.println("Enter your Persian letters separated by a " +
-                        "space or insert 'e' to exit:");
-                String letters = reader.readLine().trim();
-                if (letters.equalsIgnoreCase("e")) {
-                    System.out.println("\nBye!");
-                    break;
+            while (true) {
+                try {
+                    System.out.println("Enter your Persian letters separated by a " +
+                            "space or insert 'e' to exit:");
+                    String letters = reader.readLine().trim();
+                    if (letters.equalsIgnoreCase("e")) {
+                        System.out.println("\nBye!");
+                        break;
+                    }
+                    Finder finder = new Finder(letters);
+                    List<Word> results = finder.findTopWords(dictionary, 3);
+                    if (results.isEmpty()) {
+                        System.out.println("No words found!");
+                        continue;
+                    }
+                    results.forEach(word ->
+                            System.out.println(
+                                    "Word: " + word.word() +
+                                            " - Point: " + word.point() +
+                                            " - Box: " + word.path()));
+                } catch (InvalidLettersException e) {
+                    System.err.println("Letters Error -> " + e.getMessage());
+                } catch (Exception e) {
+                    System.err.println("Error -> " + e.getMessage());
+                } finally {
+                    System.out.println("=".repeat(50));
                 }
-                Finder finder = new Finder(letters);
-                List<Word> results = finder.findTopWords(dictionary, 3);
-                if (results.isEmpty()) {
-                    System.out.println("No words found!");
-                    continue;
-                }
-                results.forEach(word ->
-                        System.out.println(
-                                "Word: " + word.word() +
-                                " - Point: " + word.point() +
-                                " - Box: " + word.path()));
-            } catch (InvalidLettersException e) {
-                System.err.println("Letters Error -> " + e.getMessage());
-            } catch (Exception e) {
-                System.err.println("Error -> " + e.getMessage());
-            } finally {
-                System.out.println("=".repeat(50));
             }
-        }
         } catch (IOException e) {
             System.err.println("Reading Input Error -> " +
                     "App is unable to read the user input");

@@ -1,9 +1,9 @@
 package io.github.backendbaz.core;
 
 import io.github.backendbaz.exceptions.InvalidLettersException;
+import io.github.backendbaz.models.Word;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,7 @@
 package io.github.backendbaz.core;
 
 import io.github.backendbaz.exceptions.InvalidLettersException;
+import io.github.backendbaz.models.Word;
 import java.util.*;
 
 /**
