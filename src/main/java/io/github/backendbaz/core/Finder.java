@@ -40,10 +40,10 @@ import java.util.*;
 public class Finder {
 
     /** Fixed grid row count. */
-    private static final int ROWS = 4;
+    private final int ROWS = 4;
 
     /** Fixed grid column count. */
-    private static final int COLS = 4;
+    private final int COLS = 4;
 
     /** 4x4 letter grid (row-major order). */
     private final String[][] grid = new String[ROWS][COLS];
