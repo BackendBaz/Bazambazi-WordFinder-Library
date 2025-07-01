@@ -107,16 +107,36 @@ public class Finder {
      *
      * @param dictionary Preloaded word dictionary
      * @param topN Number of top results to return
+     * @param highPointLetter a high-score letter to filter list of words
      * @return Sorted list of top {@code topN} words by point value (descending),
      *         or empty list if none found
      */
-    public List<Word> findTopWords(Dictionary dictionary, int topN) {
+    public List<Word> findTopWords(Dictionary dictionary, int topN,
+                                   String highPointLetter) {
         Set<FoundWord> foundWords = new HashSet<>();
         boolean[][] visited = new boolean[ROWS][COLS];
         for (int i = 0; i < ROWS; i++)
             for (int j = 0; j < COLS; j++)
                 searchWords(dictionary.getTrieRoot(), i, j, visited,
                         new StringBuilder(), new ArrayList<>(), foundWords);
+        var multiplication = getPointOfPath(highPointLetter);
+        if (multiplication != null) {
+            return foundWords.stream()
+                    .filter(word -> word.path().stream()
+                            .anyMatch(point ->
+                                    point.row() == multiplication.row() &&
+                                            point.col() == multiplication.col()
+                            )
+                    )
+                    .map(word -> new Word(
+                            word.word(),
+                            dictionary.getPoint(word.word()),
+                            word.path()
+                    ))
+                    .sorted(Comparator.comparingLong(Word::point).reversed())
+                    .limit(topN)
+                    .toList();
+        }
         return foundWords.stream()
                 .map(foundWord -> new Word(
                         foundWord.word(),
@@ -194,6 +214,50 @@ public class Finder {
     private boolean isValidPersianLetter(String letter) {
         return letter != null && letter.length() == 1
                 && "ضصثقفغعهخحجچشسیبلاتنمکگپظطزرذدوژ".contains(letter);
+    }
+
+    /**
+     * Converts a numeric option string to grid coordinates (row, col) in a ROWS x COLS grid system.
+     * <p>
+     * This method accepts a string representing a box number in a linear numbering scheme (1-indexed),
+     * and converts it to 2D grid coordinates using row-major order. The grid uses the formula:
+     *   Box Number = (row * COLS) + (col + 1)
+     *
+     * @param option Input string representing the box number (must be a parsable integer)
+     * @return
+     *   - A Point object containing (row, col) coordinates if:
+     *        a) Input is a valid integer
+     *        b) Box number exists in grid (1 ≤ boxNumber ≤ ROWS*COLS)
+     *   - null if:
+     *        a) Input is not a valid integer (NumberFormatException)
+     *        b) Box number is out of grid range
+     * <p>
+     * Grid Numbering Example (ROWS=3, COLS=3):
+     *   +-----+-----+-----+
+     *   |  1  |  2  |  3  |   Row 0: (0,0), (0,1), (0,2)
+     *   +-----+-----+-----+
+     *   |  4  |  5  |  6  |   Row 1: (1,0), (1,1), (1,2)
+     *   +-----+-----+-----+
+     *   |  7  |  8  |  9  |   Row 2: (2,0), (2,1), (2,2)
+     *   +-----+-----+-----+
+     * <p>
+     * Important Notes:
+     *   - Grid coordinates are 0-indexed (row 0 = first row, col 0 = first column)
+     *   - First valid box number = 1, Last valid box number = ROWS * COLS
+     *   - Returns the first matching coordinate (iteration order: row-wise then column-wise)
+     *   - Constants ROWS and COLS must be defined in the containing class
+     */
+    private Point getPointOfPath(String option) {
+        try {
+            int boxNumber = Integer.parseInt(option);
+            for (int row = 0; row < ROWS; row++)
+                for (int col = 0; col < COLS; col++)
+                    if (COLS * row + col + 1 == boxNumber)
+                        return new Point(row, col);
+            return null;
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 
 }

@@ -7,7 +7,7 @@
     <!-- اطلاعات پایه -->
     <groupId>io.github.backendbaz</groupId>
     <artifactId>bazambazi-wordfinder</artifactId>
-    <version>2.0.0</version>
+    <version>2.1.0</version>
     <packaging>jar</packaging>
 
     <name>Bazambazi Letter Mash Cheating</name>

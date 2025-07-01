@@ -51,7 +51,7 @@ public class FinderTest {
         var dictionary = new Dictionary().load(Dictionary.PATH);
         List<Word> allWords = getWords();
         assertEquals(new Finder("ا ب ر ظ ظ ظ ظ ظ ظ ظ ظ ظ ظ پ د ر")
-                        .findTopWords(dictionary, 3),
+                        .findTopWords(dictionary, 3, "همه"),
                 allWords, "List of words not matched");
     }
 
@@ -86,7 +86,22 @@ public class FinderTest {
         List<Word> allWords = new ArrayList<>();
         allWords.add(new Word("پدر", 4, points));
         assertEquals(new Finder("ا ب ر ظ ظ ظ ظ ظ ظ ظ ظ ظ ظ پ د ر")
-                        .findTopWords(dictionary, 1),
+                        .findTopWords(dictionary, 1, "abc"),
+                allWords, "List of words not matched");
+    }
+
+    @Test
+    @DisplayName("Get a high-score word from dictionary words by high-score-letter filtering")
+    public void findTopWords_getAHighScoreWordByHighScoreLetterFiltering_returnsListOfWords() throws IOException {
+        var dictionary = new Dictionary().load(Dictionary.PATH);
+        List<Point> points = new ArrayList<>();
+        points.add(new Point(3, 1));
+        points.add(new Point(3, 2));
+        points.add(new Point(3, 3));
+        List<Word> allWords = new ArrayList<>();
+        allWords.add(new Word("پدر", 4, points));
+        assertEquals(new Finder("ا ب ر ظ ظ ظ ظ ظ ظ ظ ظ ظ ظ پ د ر")
+                        .findTopWords(dictionary, 3, "14"),
                 allWords, "List of words not matched");
     }
 
