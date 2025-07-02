@@ -20,23 +20,28 @@ A package used for cheating the **Letter Mash** game in **[Bazambazi](https://ba
 
 **[Maven Central Repository](https://central.sonatype.com/artifact/io.github.backendbaz/bazambazi-wordfinder/overview)**
 
-**`Version 1.0.0`**
+## `Version 1.0.0`
+
 - Automatic Module
 - Basic search logic (`DFS` and `Trie`)
 - 32520 words
 
-**`Version 1.1.0`**
+## `Version 1.1.0`
+
 - Unit testing
 - added 2 words
 
-**`Version 2.0.0`**
+## `Version 2.0.0`
+
 - Explicit Module
 - improved project structure (models)
 
-**`Version 2.1.0`**
+## `Version 2.1.0`
+
 - added filtering of words based on high-scoring letters (**`ضریب`**)
 
-**`Version 2.1.1`**
+## `Version 2.1.1`
+
 - added a word (`کفاشیان`)
 - calculates and returns number of cells in grid
 
