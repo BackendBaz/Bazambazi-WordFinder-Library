@@ -31,10 +31,14 @@ A package used for cheating the **Letter Mash** game in **[Bazambazi](https://ba
 
 **`Version 2.0.0`**
 - Explicit Module
-- enhanced project structure (models)
+- improved project structure (models)
 
 **`Version 2.1.0`**
-- Added filtering of words based on high-scoring letters (**`ضریب`**)
+- added filtering of words based on high-scoring letters (**`ضریب`**)
+
+**`Version 2.1.1`**
+- added a word (`کفاشیان`)
+- calculates and returns number of cells in grid
 
 # Usage
 

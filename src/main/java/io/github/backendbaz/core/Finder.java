@@ -40,10 +40,10 @@ import java.util.*;
 public class Finder {
 
     /** Fixed grid row count. */
-    private final int ROWS = 4;
+    private static final int ROWS = 4;
 
     /** Fixed grid column count. */
-    private final int COLS = 4;
+    private static final int COLS = 4;
 
     /** 4x4 letter grid (row-major order). */
     private final String[][] grid = new String[ROWS][COLS];
@@ -252,12 +252,16 @@ public class Finder {
             int boxNumber = Integer.parseInt(option);
             for (int row = 0; row < ROWS; row++)
                 for (int col = 0; col < COLS; col++)
-                    if (COLS * row + col + 1 == boxNumber)
+                    if (getCellNumberOfGrid(row, col, 1) == boxNumber)
                         return new Point(row, col);
             return null;
         } catch (NumberFormatException e) {
             return null;
         }
+    }
+
+    public static int getCellNumberOfGrid(int row, int col, int startNumber) {
+        return COLS * row + col + startNumber;
     }
 
 }

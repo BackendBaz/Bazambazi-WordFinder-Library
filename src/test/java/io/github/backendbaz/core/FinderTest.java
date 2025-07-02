@@ -105,4 +105,36 @@ public class FinderTest {
                 allWords, "List of words not matched");
     }
 
+    @Test
+    @DisplayName("returns number of cell [r2, c2] in grid. " +
+            "The start number is 0")
+    public void getCellNumberOfGrid_calculateNumberOfCellR2C2StartsBy0_returnsNumberOfCellInGrid() {
+        assertEquals(10,
+                Finder.getCellNumberOfGrid(2, 2, 0));
+    }
+
+    @Test
+    @DisplayName("returns number of cell [r0, c3] in grid. " +
+            "The start number is 0")
+    public void getCellNumberOfGrid_calculateNumberOfCellR0C3StartsBy0_returnsNumberOfCellInGrid() {
+        assertEquals(3,
+                Finder.getCellNumberOfGrid(0, 3, 0));
+    }
+
+    @Test
+    @DisplayName("returns number of cell [r0, c3] in grid. " +
+            "The start number is 1")
+    public void getCellNumberOfGrid_calculateNumberOfCellR0C3StartsBy1_returnsNumberOfCellInGrid() {
+        assertEquals(4,
+                Finder.getCellNumberOfGrid(0, 3, 1));
+    }
+
+    @Test
+    @DisplayName("returns number of cell [r3, c2] in grid. " +
+            "The start number is 1")
+    public void getCellNumberOfGrid_calculateNumberOfCellR3C2StartsBy1_returnsNumberOfCellInGrid() {
+        assertEquals(15,
+                Finder.getCellNumberOfGrid(3, 2, 1));
+    }
+
 }
