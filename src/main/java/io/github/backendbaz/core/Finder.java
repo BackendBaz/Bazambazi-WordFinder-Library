@@ -260,6 +260,27 @@ public class Finder {
         }
     }
 
+    /**
+     * Calculates the cell number in a grid layout based on row and column indices.
+     * <p>
+     * The formula used is: {@code (COLS * row) + col + startNumber}, where {@code COLS}
+     * is the fixed number of columns in the grid (a constant defined in the class).
+     * This effectively converts a 2D grid position (row, column) into a linear cell number,
+     * starting from a specified offset.
+     * </p>
+     *
+     * <h3>Example:</h3>
+     * <pre>
+     * // For a grid with 5 columns (COLS = 5):
+     * getCellNumberOfGrid(2, 3, 10)
+     * // returns: (5 * 2) + 3 + 10 = 23
+     * </pre>
+     *
+     * @param row          The row index of the cell (0-based).
+     * @param col          The column index of the cell (0-based).
+     * @param startNumber  The starting offset for cell numbering (e.g., begin numbering from 10).
+     * @return             The computed cell number as an integer.
+     */
     public static int getCellNumberOfGrid(int row, int col, int startNumber) {
         return COLS * row + col + startNumber;
     }
