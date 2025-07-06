@@ -45,6 +45,22 @@ A package used for cheating the **Letter Mash** game in **[Bazambazi](https://ba
 - added a word (`کفاشیان`)
 - calculates and returns number of cells in grid
 
+## `Version 2.1.2`
+
+- added 12 words
+  - `اطلاعی`
+  - `بخشم`
+  - `سخنی`
+  - `نیشن`
+  - `پش`
+  - `حس`
+  - `ریف`
+  - `صرب`
+  - `پژ`
+  - `خیشومی`
+  - `گشایی`
+  - `ژان`
+
 # Usage
 
 ```java
