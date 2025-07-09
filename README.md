@@ -61,6 +61,19 @@ A package used for cheating the **Letter Mash** game in **[Bazambazi](https://ba
   - `گشایی`
   - `ژان`
 
+## `Version 2.1.3`
+
+- Added 8 words:
+  - `قلتک`
+  - `شهین`
+  - `برگر`
+  - `قدوسیت`
+  - `دانشمندی`
+  - `خلی`
+  - `بجنبد`
+  - `کسخلی`
+- Removed a word (`بدبردار`)
+
 # Usage
 
 ```java
