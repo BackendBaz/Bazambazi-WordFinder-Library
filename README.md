@@ -74,6 +74,26 @@ A package used for cheating the **Letter Mash** game in **[Bazambazi](https://ba
   - `کسخلی`
 - Removed a word (`بدبردار`)
 
+## `Version 2.1.4`
+
+- Removed 3 words:
+  - `امرعلی`
+  - `شبباره`
+  - `کرزمان`
+- Added 12 words:
+  - `ضد`
+  - `پف`
+  - `قندان`
+  - `شاشیده`
+  - `دکمه`
+  - `فشن`
+  - `بازماند`
+  - `پریناز`
+  - `متعدده`
+  - `کنگان`
+  - `پرسند`
+  - `فرخی`
+
 # Usage
 
 ```java
